@@ -43,3 +43,15 @@ func TestCombinationSum2(t *testing.T) {
 	target := 72
 	fmt.Println(CombinationSum2(candidates, target))
 }
+
+func TestCoinChange(t *testing.T) {
+	coins := []int{1,2,5}
+	amount := 11
+	fmt.Println(CoinChange(coins, amount))
+}
+
+func TestCoinChange2(t *testing.T) {
+	coins := []int{1,2,5}
+	amount := 11
+	fmt.Println(CoinChange2(coins, amount))
+}

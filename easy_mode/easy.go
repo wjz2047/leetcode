@@ -135,6 +135,7 @@ func CombinationSum(candidates []int, target int) [][]int {
 			}
 
 			for _, list := range dp[i - candidate] {
+				// 避免重复
 				if candidate <= list[0] {
 					tmp := []int{candidate}
 					tmp = append(tmp, list...)
@@ -170,4 +171,75 @@ func CombinationSum2(candidates []int, target int) [][]int {
 		}
 	}
 	return dp[target]
+}
+
+// coin是正整数，每个coin可使用多次
+// dp，从dp(1)计算到dp(amount)
+func CoinChange(coins []int, amount int) int {
+	// 特殊处理
+	if amount == 0 {
+		return 0
+	}
+	dp := make([]int, amount+1)
+
+	// 排序coins
+	sort.Ints(coins)
+
+	for i := 1; i <= amount; i++ {
+		for _, coin := range coins {
+			if coin > i {
+				break
+			} else if coin == i {
+				dp[i] = 1
+				break
+			}
+			left := dp[i - coin]
+			if left > 0 {
+				if dp[i] == 0 {
+					dp[i] = left + 1
+				} else {
+					if left + 1 < dp[i] {
+						dp[i] = left + 1
+					}
+				}
+			}
+		}
+	}
+	if dp[amount] == 0 {
+		return -1
+	}
+	return dp[amount]
+}
+
+// coin是正整数，每个coin可使用多次
+// dp，每个coin可构成dp(coin)~dp(amount)的解
+func CoinChange2(coins []int, amount int) int {
+	// 特殊处理
+	if amount == 0 {
+		return 0
+	}
+
+	dp := make([]int, amount+1)
+	for _, coin := range coins {
+		for i := coin; i <= amount; i++ {
+			if i == coin {
+				dp[i] = 1
+				continue
+			}
+			left := dp[i - coin]
+			if left > 0 {
+				if dp[i] == 0 {
+					dp[i] = left + 1
+				} else {
+					if left + 1 < dp[i] {
+						dp[i] = left + 1
+					}
+				}
+			}
+		}
+	}
+	if dp[amount] == 0 {
+		return -1
+	}
+	return dp[amount]
 }
